@@ -1,0 +1,87 @@
+﻿@model QuanLyPhongKham.Models.ThuocListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách thuốc</h1>
+
+<p>
+    <a asp-action="Create">Thêm thuốc</a>
+</p>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="SearchPhrase" class="control-label"></label>
+                <input name="SearchPhrase" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(t => t.Drugs.First().TenThuoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(t => t.Drugs.First().DonViTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(t => t.Drugs.First().Gia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(t => t.Drugs.First().SoLuongTon)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Drugs) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenThuoc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonViTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuongTon)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<!-- Pagination Controls -->
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+        </li>
+
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+        </li>
+    </ul>
+</nav>
