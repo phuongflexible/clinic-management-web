@@ -1,0 +1,44 @@
+﻿@model QuanLyPhongKham.Models.ChiTietToaThuoc
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xóa danh sách toa thuốc</h1>
+
+<h3>Bạn có chắc muốn xóa chi tiết toa thuốc này</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ToaThuoc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ToaThuoc.MaToa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Thuoc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Thuoc.TenThuoc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CachDung)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CachDung)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Quay lại danh sách</a>
+    </form>
+</div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyPhongKham.Data;
 
@@ -11,9 +12,11 @@ using QuanLyPhongKham.Data;
 namespace QuanLyPhongKham.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250917230659_addMaHSKColumnInToHoSoKhamTable")]
+    partial class addMaHSKColumnInToHoSoKhamTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -402,43 +405,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.ToTable("HoSoKham");
                 });
 
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoaDon", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HoSoKhamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaHD")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("NgayLap")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ThuNganId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("TongTien")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HoSoKhamId");
-
-                    b.HasIndex("ThuNganId");
-
-                    b.ToTable("HoaDon");
-                });
-
             modelBuilder.Entity("QuanLyPhongKham.Models.LeTan", b =>
                 {
                     b.Property<int>("Id")
@@ -576,10 +542,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.Property<int>("HoSoKhamId")
                         .HasColumnType("int");
 
-                    b.Property<string>("MaToa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("NgayKe")
                         .HasColumnType("datetime2");
 
@@ -679,25 +641,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.Navigation("Bacsi");
 
                     b.Navigation("BenhNhan");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoaDon", b =>
-                {
-                    b.HasOne("QuanLyPhongKham.Models.HoSoKham", "HoSoKham")
-                        .WithMany()
-                        .HasForeignKey("HoSoKhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyPhongKham.Models.ThuNgan", "ThuNgan")
-                        .WithMany()
-                        .HasForeignKey("ThuNganId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HoSoKham");
-
-                    b.Navigation("ThuNgan");
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.LichHen", b =>

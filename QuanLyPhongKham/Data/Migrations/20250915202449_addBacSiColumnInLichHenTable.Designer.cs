@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyPhongKham.Data;
 
@@ -11,9 +12,11 @@ using QuanLyPhongKham.Data;
 namespace QuanLyPhongKham.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250915202449_addBacSiColumnInLichHenTable")]
+    partial class addBacSiColumnInLichHenTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,36 +304,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.ToTable("BenhNhan");
                 });
 
-            modelBuilder.Entity("QuanLyPhongKham.Models.ChiTietToaThuoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CachDung")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SoLuong")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ThuocId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToaThuocId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ThuocId");
-
-                    b.HasIndex("ToaThuocId");
-
-                    b.ToTable("ChiTietToaThuoc");
-                });
-
             modelBuilder.Entity("QuanLyPhongKham.Models.DuocSi", b =>
                 {
                     b.Property<int>("Id")
@@ -358,85 +331,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DuocSi");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoSoKham", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BacSiId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BenhNhanId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ChanDoan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KetLuan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaHSK")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("NgayKham")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TrieuChung")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BacSiId");
-
-                    b.HasIndex("BenhNhanId");
-
-                    b.ToTable("HoSoKham");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoaDon", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HoSoKhamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaHD")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("NgayLap")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ThuNganId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("TongTien")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HoSoKhamId");
-
-                    b.HasIndex("ThuNganId");
-
-                    b.ToTable("HoaDon");
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.LeTan", b =>
@@ -558,40 +452,6 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.ToTable("Thuoc");
                 });
 
-            modelBuilder.Entity("QuanLyPhongKham.Models.ToaThuoc", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DuocSiId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GhiChu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HoSoKhamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaToa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("NgayKe")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DuocSiId");
-
-                    b.HasIndex("HoSoKhamId");
-
-                    b.ToTable("ToaThuoc");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -643,66 +503,9 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QuanLyPhongKham.Models.ChiTietToaThuoc", b =>
-                {
-                    b.HasOne("QuanLyPhongKham.Models.Thuoc", "Thuoc")
-                        .WithMany()
-                        .HasForeignKey("ThuocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyPhongKham.Models.ToaThuoc", "ToaThuoc")
-                        .WithMany()
-                        .HasForeignKey("ToaThuocId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Thuoc");
-
-                    b.Navigation("ToaThuoc");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoSoKham", b =>
-                {
-                    b.HasOne("QuanLyPhongKham.Models.Bacsi", "Bacsi")
-                        .WithMany()
-                        .HasForeignKey("BacSiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyPhongKham.Models.BenhNhan", "BenhNhan")
-                        .WithMany()
-                        .HasForeignKey("BenhNhanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bacsi");
-
-                    b.Navigation("BenhNhan");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.HoaDon", b =>
-                {
-                    b.HasOne("QuanLyPhongKham.Models.HoSoKham", "HoSoKham")
-                        .WithMany()
-                        .HasForeignKey("HoSoKhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyPhongKham.Models.ThuNgan", "ThuNgan")
-                        .WithMany()
-                        .HasForeignKey("ThuNganId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HoSoKham");
-
-                    b.Navigation("ThuNgan");
-                });
-
             modelBuilder.Entity("QuanLyPhongKham.Models.LichHen", b =>
                 {
-                    b.HasOne("QuanLyPhongKham.Models.Bacsi", "BacSi")
+                    b.HasOne("QuanLyPhongKham.Models.Bacsi", "Bacsi")
                         .WithMany()
                         .HasForeignKey("BacSiId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -720,30 +523,11 @@ namespace QuanLyPhongKham.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BacSi");
+                    b.Navigation("Bacsi");
 
                     b.Navigation("BenhNhan");
 
                     b.Navigation("LeTan");
-                });
-
-            modelBuilder.Entity("QuanLyPhongKham.Models.ToaThuoc", b =>
-                {
-                    b.HasOne("QuanLyPhongKham.Models.DuocSi", "DuocSi")
-                        .WithMany()
-                        .HasForeignKey("DuocSiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyPhongKham.Models.HoSoKham", "HoSoKham")
-                        .WithMany()
-                        .HasForeignKey("HoSoKhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DuocSi");
-
-                    b.Navigation("HoSoKham");
                 });
 #pragma warning restore 612, 618
         }

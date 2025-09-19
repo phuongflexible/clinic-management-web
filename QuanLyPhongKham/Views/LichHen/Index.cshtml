@@ -1,0 +1,109 @@
+﻿@model QuanLyPhongKham.Models.LichHenListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách lịch hẹn</h1>
+
+<p>
+    <a asp-action="Create">Đặt lịch hẹn</a>
+</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="SearchPhrase" class="control-label"></label>
+                <input name="SearchPhrase" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<!--
+<form method="get">
+    <div class="form-group">
+        <label for="TuNgay">Từ ngày:</label>
+        <input type="date" id="DateTime" name="DateTime" value="@@Model.FromDate?.ToString("yyyy-MM-dd")" class="form-control" />
+
+        <label for="DenNgay">Đến ngày:</label>
+        <input type="date" id="DenNgay" name="DenNgay" value="@@Model.ToDate?.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lọc</button>
+    <a asp-page="./Index" class="btn btn-secondary">Xóa lọc</a>
+</form>
+-->
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Bệnh nhân
+            </th>
+            <th>
+                Bác sĩ
+            </th>
+            <th>
+                Lễ tân
+            </th>
+            <th>
+                @Html.DisplayNameFor(l => l.Appointments.First().NgayGio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(l => l.Appointments.First().TrangThai)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Appointments) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BenhNhan.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BacSi.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeTan.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayGio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<!-- Pagination Controls -->
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+        </li>
+
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+        </li>
+    </ul>
+</nav>

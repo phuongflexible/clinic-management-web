@@ -1,0 +1,65 @@
+﻿@model IEnumerable<QuanLyPhongKham.Models.HoaDon>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách hóa đơn</h1>
+
+<p>
+    <a asp-action="Create">Thêm hóa đơn</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MaHD)
+            </th>
+            <th>
+                Thu ngân
+            </th>
+            <th>
+                Hồ sơ khám
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayLap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaHD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThuNgan.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoSoKham.MaHSK)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayLap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -17,5 +17,14 @@ namespace QuanLyPhongKham.Data
         public DbSet<QuanLyPhongKham.Models.ThuNgan> ThuNgan { get; set; } = default!;
         public DbSet<QuanLyPhongKham.Models.LeTan> LeTan { get; set; } = default!;
         public DbSet<QuanLyPhongKham.Models.Thuoc> Thuoc { get; set; } = default!;
+        public DbSet<QuanLyPhongKham.Models.LichHen> LichHen { get; set; } = default!;
+        public DbSet<QuanLyPhongKham.Models.HoSoKham> HoSoKham { get; set; } = default!;
+        public DbSet<QuanLyPhongKham.Models.ToaThuoc> ToaThuoc { get; set; } = default!;
+        public DbSet<QuanLyPhongKham.Models.ChiTietToaThuoc> ChiTietToaThuoc { get; set; } = default!;
+        public DbSet<QuanLyPhongKham.Models.HoaDon> HoaDon { get; set; } = default!;
+
+       
+
     }
+
 }

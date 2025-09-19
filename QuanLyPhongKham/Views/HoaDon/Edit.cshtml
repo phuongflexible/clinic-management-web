@@ -1,0 +1,58 @@
+﻿@model QuanLyPhongKham.Models.HoaDon
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Chỉnh sửa hóa đơn</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="MaHD" class="control-label"></label>
+                <input asp-for="MaHD" class="form-control" />
+                <span asp-validation-for="MaHD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ThuNganId" class="control-label"></label>
+                <select asp-for="ThuNganId" class="form-control" asp-items="ViewBag.ThuNganId"></select>
+                <span asp-validation-for="ThuNganId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoSoKhamId" class="control-label"></label>
+                <select asp-for="HoSoKhamId" class="form-control" asp-items="ViewBag.HoSoKhamId"></select>
+                <span asp-validation-for="HoSoKhamId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayLap" class="control-label"></label>
+                <input asp-for="NgayLap" class="form-control" />
+                <span asp-validation-for="NgayLap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TongTien" class="control-label"></label>
+                <input asp-for="TongTien" class="form-control" />
+                <span asp-validation-for="TongTien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentMethod" class="control-label"></label>
+                <input asp-for="PaymentMethod" class="form-control" />
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -9,7 +9,6 @@ namespace QuanLyPhongKham.Models
         public int Id { get; set; }
 
         [Display(Name = "Chuyên khoa")]
-        [Required(ErrorMessage = "")]
         public string ChuyenKhoa { get; set; }
 
     }

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<QuanLyPhongKham.Models.ChiTietToaThuoc>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách chi tiết toa thuốc</h1>
+
+<p>
+    <a asp-action="Create">Thêm chi tiết toa thuốc</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Toa thuốc
+            </th>
+            <th>
+                Thuốc
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLuong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CachDung)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToaThuoc.MaToa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thuoc.TenThuoc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CachDung)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
