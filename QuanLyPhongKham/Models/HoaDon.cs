@@ -8,6 +8,7 @@ namespace QuanLyPhongKham.Models
         [Required]
         public int Id { get; set; }
 
+        [Required]
         [Display(Name ="Mã hóa đơn")]
         public string MaHD { get; set; }
 
@@ -30,5 +31,7 @@ namespace QuanLyPhongKham.Models
         [Display(Name = "Phương thức thanh toán")]
         public string PaymentMethod {  get; set; }
 
+        [Display(Name = "Trạng thái")]
+        public TrangThaiHoaDon TrangThai { get; set; }
     }
 }

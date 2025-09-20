@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyPhongKham.Data;
@@ -54,6 +55,12 @@ namespace QuanLyPhongKham.Controllers
             return View();
         }
 
+        //Check if medical record code existed
+        public async Task<bool> CheckIfMedicalRecordCodeExisted(string MaHSK)
+        {
+            return await _context.HoSoKham.AnyAsync(h => h.MaHSK == MaHSK);
+        }
+
         // POST: HoSoKham/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -66,6 +73,12 @@ namespace QuanLyPhongKham.Controllers
             {
                 ViewData["BacSiId"] = new SelectList(_context.Bacsi, "Id", "HoTen", hoSoKham.BacSiId);
                 ViewData["BenhNhanId"] = new SelectList(_context.BenhNhan, "Id", "HoTen", hoSoKham.BenhNhanId);
+
+                if (await CheckIfMedicalRecordCodeExisted(hoSoKham.MaHSK))
+                {
+                    ModelState.AddModelError("MaHSK", "Mã hồ sơ khám bệnh đã tồn tại");
+                    return View(hoSoKham);
+                }
                 _context.Add(hoSoKham);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

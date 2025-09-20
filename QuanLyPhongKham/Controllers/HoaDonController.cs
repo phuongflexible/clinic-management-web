@@ -54,21 +54,33 @@ namespace QuanLyPhongKham.Controllers
             return View();
         }
 
+        //Check Bill Code if exist
+        public async Task<bool> CheckIfBillCodeExisted(string MaHD)
+        {
+            return await _context.HoaDon.AnyAsync(h => h.MaHD == MaHD);
+        }
+
         // POST: HoaDon/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod")] HoaDon hoaDon)
+        public async Task<IActionResult> Create([Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod,TrangThai")] HoaDon hoaDon)
         {
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
+                ViewData["HoSoKhamId"] = new SelectList(_context.HoSoKham, "Id", "MaHSK", hoaDon.HoSoKhamId);
+                ViewData["ThuNganId"] = new SelectList(_context.ThuNgan, "Id", "HoTen", hoaDon.ThuNganId);
+                if (await CheckIfBillCodeExisted(hoaDon.MaHD))
+                {
+                    ModelState.AddModelError("MaHD", "Mã hóa đơn đã tồn tại");
+                    return View(hoaDon);
+                }
                 _context.Add(hoaDon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HoSoKhamId"] = new SelectList(_context.HoSoKham, "Id", "MaHSK", hoaDon.HoSoKhamId);
-            ViewData["ThuNganId"] = new SelectList(_context.ThuNgan, "Id", "HoTen", hoaDon.ThuNganId);
             return View(hoaDon);
         }
 
@@ -95,13 +107,15 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod")] HoaDon hoaDon)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod,TrangThai")] HoaDon hoaDon)
         {
             if (id != hoaDon.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Clear();
+            ViewData["HoSoKhamId"] = new SelectList(_context.HoSoKham, "Id", "MaHSK", hoaDon.HoSoKhamId);
+            ViewData["ThuNganId"] = new SelectList(_context.ThuNgan, "Id", "HoTen", hoaDon.ThuNganId);
             if (ModelState.IsValid)
             {
                 try
@@ -121,9 +135,7 @@ namespace QuanLyPhongKham.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["HoSoKhamId"] = new SelectList(_context.HoSoKham, "Id", "MaHSK", hoaDon.HoSoKhamId);
-            ViewData["ThuNganId"] = new SelectList(_context.ThuNgan, "Id", "HoTen", hoaDon.ThuNganId);
+            }    
             return View(hoaDon);
         }
 

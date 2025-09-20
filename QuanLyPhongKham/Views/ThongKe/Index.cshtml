@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Thống kê doanh thu & bệnh nhân";
+}
+<h2>Thống kê theo tháng</h2>
+
+<canvas id="chartRevenue" height="100"></canvas>
+<canvas id="chartPatient" height="100" class="mt-5"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function loadData() {
+            const year = new Date().getFullYear();
+            const response = await fetch(`/ThongKe/MonthlyStatistics?year=${year}`)
+            const data = await response.json();
+            console.log("Dữ liệu API: ", data)
+
+            //Array Jan - Dec
+            const labels = Array.from({ length: 12 }, (_, i) => i + 1);
+
+            //Map revenue
+            const revenue = labels.map(m => {
+                const item = data.doanhThu.find(d => d.thang === m);
+                return item ? item.doanhThu : 0;
+            });
+
+            //Map patient
+            const patient = labels.map(m => {
+                const item = data.benhNhan.find(d => d.thang === m);
+                return item ? item.soBenhNhan : 0;
+            });
+
+            //Revenue chart
+            new Chart(document.getElementById('chartRevenue'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: revenue,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                }
+            });
+
+            //Patient chart
+            new Chart(document.getElementById('chartPatient'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số bệnh nhân',
+                        data: patient,
+                        backgroundColor: 'orange'
+                    }]
+                }
+            });
+        }
+        loadData();
+    </script>
+
+}

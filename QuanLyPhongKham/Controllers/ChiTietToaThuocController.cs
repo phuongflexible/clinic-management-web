@@ -50,7 +50,7 @@ namespace QuanLyPhongKham.Controllers
         public IActionResult Create()
         {
             ViewData["ThuocId"] = new SelectList(_context.Thuoc, "Id", "TenThuoc");
-            ViewData["ToaThuocId"] = new SelectList(_context.ToaThuoc, "Id", "Id");
+            ViewData["ToaThuocId"] = new SelectList(_context.ToaThuoc, "Id", "MaToa");
             return View();
         }
 
@@ -61,6 +61,7 @@ namespace QuanLyPhongKham.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ToaThuocId,ThuocId,SoLuong,CachDung")] ChiTietToaThuoc chiTietToaThuoc)
         {
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 ViewData["ThuocId"] = new SelectList(_context.Thuoc, "Id", "TenThuoc", chiTietToaThuoc.ThuocId);

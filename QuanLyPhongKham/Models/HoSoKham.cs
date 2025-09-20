@@ -8,6 +8,7 @@ namespace QuanLyPhongKham.Models
         [Required]
         public int Id { get; set; }
 
+        [Required]
         [Display(Name = "Mã hồ sơ khám")]
         public string MaHSK { get; set; }
 
