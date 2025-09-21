@@ -26,12 +26,12 @@
                 <input asp-for="Gia" class="form-control" />
                 <span asp-validation-for="Gia" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="SoLuongTon" class="control-label"></label>
                 <input asp-for="SoLuongTon" class="form-control" />
                 <span asp-validation-for="SoLuongTon" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input type="submit" value="Thêm" class="btn btn-primary" />
             </div>
         </form>
@@ -39,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Quay lại danh sách</a>
+    <a class="nav-link text-white back-list" asp-action="Index">Quay lại danh sách</a>
 </div>
 
 @section Scripts {

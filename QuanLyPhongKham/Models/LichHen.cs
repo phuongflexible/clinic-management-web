@@ -30,7 +30,7 @@ namespace QuanLyPhongKham.Models
         [Display(Name = "Trạng thái")]
         public TrangThaiLichHen TrangThai { get; set; }
 
-        public LichHen() { }
+       
 
     }
 }

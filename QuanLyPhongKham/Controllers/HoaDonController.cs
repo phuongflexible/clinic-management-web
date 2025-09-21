@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoaDon
+        [Authorize(Roles = "Admin, Cashier")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.HoaDon.Include(h => h.HoSoKham).Include(h => h.ThuNgan);
@@ -27,6 +29,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoaDon/Details/5
+        [Authorize(Roles = "Admin, Cashier")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +50,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoaDon/Create
+        [Authorize(Roles = "Cashier")]
         public IActionResult Create()
         {
             ViewData["HoSoKhamId"] = new SelectList(_context.HoSoKham, "Id", "MaHSK");
@@ -65,6 +69,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Cashier")]
         public async Task<IActionResult> Create([Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod,TrangThai")] HoaDon hoaDon)
         {
             ModelState.Clear();
@@ -85,6 +90,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoaDon/Edit/5
+        [Authorize(Roles = "Cashier")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,6 +113,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Cashier")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MaHD,ThuNganId,HoSoKhamId,NgayLap,TongTien,PaymentMethod,TrangThai")] HoaDon hoaDon)
         {
             if (id != hoaDon.Id)
@@ -140,6 +147,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoaDon/Delete/5
+        [Authorize(Roles = "Cashier")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -162,6 +170,7 @@ namespace QuanLyPhongKham.Controllers
         // POST: HoaDon/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Cashier")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hoaDon = await _context.HoaDon.FindAsync(id);

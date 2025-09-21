@@ -31,7 +31,7 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div> 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Password" class="control-label"></label>
                 <div class="input-group" style="max-width:300px;">
                     <input asp-for="Password" type="password" id="passwordInput" name="Password" class="form-control" />
@@ -41,7 +41,7 @@
                 </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input type="submit" value="Thêm" class="btn btn-primary" />
             </div>
         </form>
@@ -49,7 +49,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Quay lại danh sách</a>
+    <a class="nav-link text-white back-list" asp-action="Index">Quay lại danh sách</a>
 </div>
 
 @section Scripts {

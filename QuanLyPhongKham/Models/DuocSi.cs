@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyPhongKham.Models
 {
@@ -6,5 +7,8 @@ namespace QuanLyPhongKham.Models
     {
         [Required]   
         public int Id { get; set; }
+
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
     }
 }

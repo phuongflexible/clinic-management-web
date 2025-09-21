@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyPhongKham.Data;
 
 namespace QuanLyPhongKham.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ThongKeController : Controller
     {
         private readonly ApplicationDbContext _context;

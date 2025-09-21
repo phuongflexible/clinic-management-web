@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using QuanLyPhongKham.Models;
 
 namespace QuanLyPhongKham.Controllers
 {
+    [Authorize(Roles = "Doctor, Pharmacist")]
     public class ToaThuocController : Controller
     {
         private readonly ApplicationDbContext _context;

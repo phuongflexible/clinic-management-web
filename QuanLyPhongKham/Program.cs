@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuanLyPhongKham.Data;
+using QuanLyPhongKham.Models;
 using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,16 +71,70 @@ using (var scope = app.Services.CreateScope())
 
         //Only create 1 admin account when start
         //if there is no account created
-        if (!userManager.Users.Any(u => u.UserName == "admin"))
+        if (!userManager.Users.Any(u => u.UserName == email))
         {
             var user = new IdentityUser
             {
-                UserName = "admin",
+                UserName = email,
                 Email = email,
             };
             await userManager.CreateAsync(user, password);
             await userManager.AddToRoleAsync(user, "Admin");
-        } 
+        }
+
+        //Create a doctor account
+        
+        string doctorEmail = "truong.nguyen@gmail.com";
+        if (!userManager.Users.Any(u => u.UserName == doctorEmail))
+        {
+            var user = new IdentityUser
+            {
+                UserName = doctorEmail,
+                Email = doctorEmail,
+            };
+            await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, "Doctor");
+
+        }
+
+        //Create a receptionist account
+        string receptionistEmail = "hungnguyen@gmail.com";
+        if (!userManager.Users.Any(u => u.UserName == receptionistEmail))
+        {
+            var user = new IdentityUser
+            {
+                UserName = receptionistEmail,
+                Email = receptionistEmail,
+            };
+            await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, "Receptionist");
+        }
+
+        //Create a pharmacist account
+        string pharmacistEmail = "kim.nguyen@gmail.com";
+        if (!userManager.Users.Any(u => u.UserName == pharmacistEmail))
+        {
+            var user = new IdentityUser
+            {
+                UserName = pharmacistEmail,
+                Email = pharmacistEmail,
+            };
+            await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, "Pharmacist");
+        }
+
+        //Create a cashier account
+        string cashierEmail = "ngan.nguyen@gmail.com";
+        if (!userManager.Users.Any(u => u.UserName == cashierEmail))
+        {
+            var user = new IdentityUser
+            {
+                UserName = cashierEmail,
+                Email = cashierEmail,
+            };
+            await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, "Cashier");
+        }
 
     }
     catch (Exception ex)

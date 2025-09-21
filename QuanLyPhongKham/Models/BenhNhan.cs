@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyPhongKham.Models
 {
@@ -7,8 +8,11 @@ namespace QuanLyPhongKham.Models
         [Required]
         public int Id { get; set; }
 
+        //FK to AspNetUsers
+        public string UserId {  get; set; }
+
         [Display(Name = "Ngày sinh")]
-        public string NgaySinh { get; set; }
+        public DateTime NgaySinh { get; set; }
 
         [Display(Name = "Giới tính")]
         public string GioiTinh { get; set; }
@@ -20,5 +24,7 @@ namespace QuanLyPhongKham.Models
         public string? Avatar { get; set; }
 
         public BenhNhan() { }
+
+        public IdentityUser User { get; set; }
     }
 }

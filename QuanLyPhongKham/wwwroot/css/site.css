@@ -20,3 +20,35 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nav-item a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.nav-item a:hover {
+    background: #34495e;
+}
+
+.add {
+    display: inline-block;
+    border-radius: 5px;
+    background: darkblue;
+}
+.edit, .back-list {
+    display: inline-block;
+    border-radius: 5px;
+    background: green;
+}
+.detail {
+    display: inline-block;
+    border-radius: 5px;
+    background: orange;
+}
+.delete {
+    display: inline-block;
+    border-radius: 5px;
+    background: red;
+}

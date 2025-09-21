@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +16,15 @@ namespace QuanLyPhongKham.Controllers
     public class LichHenController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LichHenController(ApplicationDbContext context)
+        public LichHenController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin, Patient, Doctor, Receptionist")]
         // GET: LichHen
         public async Task<IActionResult> Index(int? pageNumber, String searchPhrase)
         {
@@ -31,9 +37,50 @@ namespace QuanLyPhongKham.Controllers
             {
                 query = query.Where(l => l.BenhNhan.HoTen.Contains(searchPhrase));
             }
-
             int totalCount = await query.CountAsync();
-            var appointments = await query.OrderBy(b => b.Id)
+
+            //Authorize
+            if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+            {
+                //Admin/Receptionist see all
+                var allAppointments = await _context.LichHen
+                    .Include(l => l.BenhNhan)
+                    .OrderBy(l => l.NgayGio).Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync();
+                //admin, receptionist's own view
+                var vm = new LichHenListViewModel
+                {
+                    Appointments = allAppointments,
+                    PageIndex = currentPage,
+                    TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+                };
+                return View(vm);
+            }
+            else
+            {
+                //Patient only see theirs
+                var userId = _userManager.GetUserId(User);
+                var benhNhan = await _context.BenhNhan
+                .FirstOrDefaultAsync(b => b.UserId == userId);
+                if (benhNhan == null)
+                {
+                    return NotFound("Không tìm thấy bệnh nhân");
+                }
+                var myAppointments = await _context.LichHen
+                    .Where(l => l.BenhNhanId == benhNhan.Id)
+                    .OrderBy(l => l.NgayGio).Skip((currentPage - 1) * pageSize).Take(pageSize).Include(l => l.BenhNhan).ToListAsync();
+
+                var vm = new LichHenListViewModel
+                {
+                    Appointments = myAppointments,
+                    PageIndex = currentPage,
+                    TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+                };
+
+                return View(vm);
+            }
+            
+            /*
+            var appointments = await query.Where(l => l.BenhNhanId == benhNhan.Id).OrderBy(b => b.Id)
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize).Include(l => l.BenhNhan).Include(l => l.BacSi).Include(l => l.LeTan).ToListAsync();
 
@@ -44,10 +91,11 @@ namespace QuanLyPhongKham.Controllers
                 TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
             };
 
-            return View(vm);
+            return View(vm);*/
         }
 
         // GET: LichHen/Details/5
+        [Authorize(Roles = "Admin, Patient, Receptionist")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,6 +117,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: LichHen/Create
+        [Authorize(Roles = "Patient, Receptionist")]
         public IActionResult Create()
         {
             ViewData["BenhNhanId"] = new SelectList(_context.BenhNhan.ToList(), "Id", "HoTen");
@@ -82,6 +131,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Patient, Receptionist")]
         public async Task<IActionResult> Create([Bind("Id,BenhNhanId,BacSiId,LeTanId,NgayGio,TrangThai")] LichHen lichHen)
         {
             ModelState.Clear();
@@ -90,6 +140,19 @@ namespace QuanLyPhongKham.Controllers
                 ViewData["BenhNhanId"] = new SelectList(_context.BenhNhan, "Id", "HoTen", lichHen.BenhNhanId);
                 ViewData["BacSiId"] = new SelectList(_context.Bacsi, "Id", "HoTen", lichHen.BacSiId);
                 ViewData["LeTanId"] = new SelectList(_context.LeTan, "Id", "HoTen", lichHen.LeTanId);
+
+                //Take User id logged in
+                var userId = _userManager.GetUserId(User);
+                var benhNhan = await _context.BenhNhan
+                    .FirstOrDefaultAsync(b => b.UserId == userId);
+
+                if (benhNhan == null)
+                {
+                    ModelState.AddModelError("", "Không tìm thấy bệnh nhân");
+                    return View(lichHen);
+                }
+                lichHen.BenhNhanId = benhNhan.Id;
+                lichHen.TrangThai = 0;
 
                 //Check if patient book after working hours: 8:00 - 18:00
                 var startWork = new TimeSpan(8, 0, 0);
@@ -135,6 +198,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: LichHen/Edit/5
+        [Authorize(Roles = "Patient, Receptionist")]
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["BenhNhanId"] = new SelectList(_context.BenhNhan.ToList(), "Id", "HoTen");
@@ -159,6 +223,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Patient, Receptionist")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BenhNhanId,BacSiId,LeTanId,NgayGio,TrangThai")] LichHen lichHen)
         {
             if (id != lichHen.Id)
@@ -194,6 +259,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: LichHen/Delete/5
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -217,6 +283,7 @@ namespace QuanLyPhongKham.Controllers
         // POST: LichHen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Receptionist")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var lichHen = await _context.LichHen.FindAsync(id);

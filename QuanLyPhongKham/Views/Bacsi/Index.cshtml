@@ -6,20 +6,17 @@
 
 <h1>Danh sách bác sĩ</h1>
 
-<p>
-    <a asp-action="Create">Thêm bác sĩ</a>
+<p class="add">
+    <a class="nav-link text-white" asp-action="Create">Thêm bác sĩ</a>
 </p>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
+            <div class="d-flex">
                 <label for="SearchPhrase" class="control-label"></label>
-                <input name="SearchPhrase" class="form-control" />
-            </div>
-            <div class="form-group">
+                <input name="SearchPhrase" placeholder="Tìm kiếm" class="form-control me-2" />
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </form>
@@ -59,9 +56,9 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                <a class="nav-link text-white edit" asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a class="nav-link text-white detail" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a class="nav-link text-white delete" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
             </td>
         </tr>
 }

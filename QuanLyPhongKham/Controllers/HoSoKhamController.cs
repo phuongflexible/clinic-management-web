@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,6 +22,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoSoKham
+        [Authorize(Roles = "Admin, Doctor")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.HoSoKham.Include(h => h.Bacsi).Include(h => h.BenhNhan);
@@ -28,6 +30,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoSoKham/Details/5
+        [Authorize(Roles = "Admin, Doctor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +51,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoSoKham/Create
+        [Authorize(Roles = "Doctor")]
         public IActionResult Create()
         {
             ViewData["BacSiId"] = new SelectList(_context.Bacsi, "Id", "HoTen");
@@ -66,6 +70,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Create([Bind("Id,MaHSK,BenhNhanId,TrieuChung,ChanDoan,KetLuan,NgayKham,BacSiId")] HoSoKham hoSoKham)
         {
             ModelState.Clear();
@@ -88,6 +93,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoSoKham/Edit/5
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,6 +116,7 @@ namespace QuanLyPhongKham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MaHSK,BenhNhanId,TrieuChung,ChanDoan,KetLuan,NgayKham,BacSiId")] HoSoKham hoSoKham)
         {
             if (id != hoSoKham.Id)
@@ -143,6 +150,7 @@ namespace QuanLyPhongKham.Controllers
         }
 
         // GET: HoSoKham/Delete/5
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -165,6 +173,7 @@ namespace QuanLyPhongKham.Controllers
         // POST: HoSoKham/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hoSoKham = await _context.HoSoKham.FindAsync(id);

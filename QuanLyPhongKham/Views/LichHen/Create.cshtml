@@ -1,4 +1,7 @@
 ﻿@model QuanLyPhongKham.Models.LichHen
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Create";
@@ -28,21 +31,42 @@
                 <input asp-for="NgayGio" class="form-control" />
                 <span asp-validation-for="NgayGio" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="TrangThai" class="control-label"></label>
+                <!--
+                @@if(User.IsInRole("Patient"))
+                {
+                    <select asp-for="TrangThai" class="form-control" asp-items="Html.GetEnumSelectList<TrangThaiLichHen>()">
+                        <option value="ChoXacNhan" selected></option>
+                    </select>
+                }
+                else
+                {
+                    
+                }-->
                 <select asp-for="TrangThai" class="form-control" asp-items="Html.GetEnumSelectList<TrangThaiLichHen>()"></select>
                 <span asp-validation-for="TrangThai" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input type="submit" value="Đặt lịch" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if(User.IsInRole("Receptionist"))
+{
+    <div>
+        <a class="nav-link text-white back-list" asp-action="Index">Quay lại danh sách</a>
+    </div>
+}
+else
+{
+    <div>
+        <a class="nav-link text-white back-list" asp-controller="Home" asp-action="Index">Quay về trang chủ</a>
+    </div>
+}
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

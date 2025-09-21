@@ -252,7 +252,13 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bacsi");
                 });
@@ -284,9 +290,8 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NgaySinh")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("NgaySinh")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -296,7 +301,13 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BenhNhan");
                 });
@@ -355,7 +366,13 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("DuocSi");
                 });
@@ -466,7 +483,13 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("LeTan");
                 });
@@ -529,7 +552,13 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ThuNgan");
                 });
@@ -646,6 +675,28 @@ namespace QuanLyPhongKham.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("QuanLyPhongKham.Models.Bacsi", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("QuanLyPhongKham.Models.BenhNhan", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("QuanLyPhongKham.Models.ChiTietToaThuoc", b =>
                 {
                     b.HasOne("QuanLyPhongKham.Models.Thuoc", "Thuoc")
@@ -663,6 +714,17 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.Navigation("Thuoc");
 
                     b.Navigation("ToaThuoc");
+                });
+
+            modelBuilder.Entity("QuanLyPhongKham.Models.DuocSi", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.HoSoKham", b =>
@@ -703,6 +765,17 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.Navigation("ThuNgan");
                 });
 
+            modelBuilder.Entity("QuanLyPhongKham.Models.LeTan", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("QuanLyPhongKham.Models.LichHen", b =>
                 {
                     b.HasOne("QuanLyPhongKham.Models.Bacsi", "BacSi")
@@ -728,6 +801,17 @@ namespace QuanLyPhongKham.Data.Migrations
                     b.Navigation("BenhNhan");
 
                     b.Navigation("LeTan");
+                });
+
+            modelBuilder.Entity("QuanLyPhongKham.Models.ThuNgan", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.ToaThuoc", b =>
